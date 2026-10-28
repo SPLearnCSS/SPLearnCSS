@@ -1,0 +1,79 @@
+/* Add your CSS rules here */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --white: #fff;
+  --black: #000;
+  --color1: #fa1eb1;
+  --color2: #4706eb;
+  --color3: #a2f4a2;
+  --color4: #ff7f50;
+  --color5: #00358e;
+  --color6: #c59fcb;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #fff;
+  font-size: 1.5rem;
+  padding: 0px;
+  margin: 100px;
+  height: 100vh;
+}
+
+.tab-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  grid-template-rows: auto 1fr;
+  column-gap: 1rem;
+
+  &::after{
+    position:absolute;
+    content:'';
+    position-anchor:--tab-focus;
+    height:4px;
+    width:calc(anchor-size(width) / 2);
+    background-color: #000;
+    top:anchor(bottom);
+    left:anchor(left);
+    transition:.4s;
+  }
+}
+
+details {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1 / span 2;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+}
+
+summary {
+  grid-column: var(--n) / span 1;
+  grid-row: 1;
+  display: grid;
+  padding: 1rem;
+ 
+  cursor: pointer;
+  z-index: 1;
+}
+
+details[open] :is(summary) {
+  font-weight: bold;
+  anchor-name:--tab-focus;
+}
+
+details::details-content {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+  background-color:#fafafa;
+  height:400px;
+  margin-top:5px;
+}
+
+details:not([open])::details-content {
+  display: none;
+}
