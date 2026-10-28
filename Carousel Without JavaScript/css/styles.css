@@ -1,0 +1,109 @@
+/* Add your CSS rules here */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --white: #fff;
+  --black: #000;
+  --color1: #fa1eb1;
+  --color2: #4706eb;
+  --color3: #a2f4a2;
+  --color4: #ff7f50;
+  --color5: #00358e;
+  --color6: #c59fcb;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #fff;
+  font-size: 1.5rem;
+  padding: 0px;
+  margin: 100px;
+  height: 100vh;
+}
+
+.carousel-wrapper{
+  position:relative;
+}
+
+.carousel{
+  list-style-type:none;
+  display:flex;
+  gap:1rem;
+  width:100%;
+  padding:0;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  scroll-snap-type:x mandatory;
+  scroll-marker-group:after;
+}
+
+.carousel::-webkit-scrollbar{
+  display:none;
+}
+
+.carousel::scroll-button(left),
+.carousel::scroll-button(right){
+  position:absolute;
+  width:40px;
+  aspect-ratio:1;
+  background-color:var(--color2);
+  color:#fff;
+  font-size:1.5rem;
+  border-radius:50%;
+  top:45%;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center
+}
+
+.carousel::scroll-button(left){
+ content:"<";
+ left:-20px;
+}
+
+.carousel::scroll-button(right){
+ content:">";
+ right:-20px;
+}
+
+.carousel::scroll-button(left):disabled,
+.carousel::scroll-button(right):disabled{
+  opacity:0.25;
+  cursor:default;
+  pointer-events:none;
+}
+
+.card{
+  width:150px;
+  height:200px;
+  background-color:var(--color3);
+  flex:0 0 calc(25% - 0.75rem);
+  display:grid;
+  place-items:center;
+  scroll-snap-align:start;
+}
+
+.card::scroll-marker{
+  content:'';
+  width:10px;
+  aspect-ratio:1;
+  border:0;
+  border-radius:50%;
+  background-color:#000;
+  cursor:pointer;
+}
+
+::scroll-marker-group{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+  margin-top:1.5rem;
+}
+
+.card::scroll-marker:target-current{
+  background-color:red;
+  transform:scale(1.5)
+}
