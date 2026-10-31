@@ -15,6 +15,7 @@ SPLearnCSS channels.
 | Project | What it shows | Live demo |
 |---|---|---|
 | [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
+| [Show 3 Tags + "+N more"](./show-3-tags) | Shows the first 3 tags and an automatic "+17 more" chip with `:nth-child(n + 4)`, `:has()` and `sibling-count()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/show-3-tags/) |
 | [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
 | [Carousel Without JavaScript](./Carousel%20Without%20JavaScript) | A scroll-snap carousel with CSS scroll markers | [Try it](https://splearncss.github.io/SPLearnCSS/Carousel%20Without%20JavaScript/) |
 | [CSS Tabs using details and summary](./CSS%20Tabs%20using%20details%20and%20summary) | Tabs built from native `<details>` and `<summary>` | [Try it](https://splearncss.github.io/SPLearnCSS/CSS%20Tabs%20using%20details%20and%20summary/) |

@@ -1,0 +1,116 @@
+/* Show 3 tags + an automatic "+N more" chip — pure CSS, 0 JS
+   - :nth-child(n + 4) hides every tag from the 4th onwards
+   - :has(#all:checked) shows them all again
+   - sibling-count() counts the tags, so "+N more" is never hard-coded
+   - sibling-index() staggers the cascade */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: radial-gradient(60% 50% at 50% 30%, #10201a, #070909 72%);
+  font-family: system-ui, sans-serif;
+  color: #e6eaf4;
+}
+
+main { width: min(640px, 100%); }
+
+.card {
+  padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(165deg, #1b1830, #11131d 60%, #0d1016);
+  border: 1px solid rgb(255 255 255 / .08);
+}
+
+header { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+.avatar {
+  flex: none; width: 48px; height: 48px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, #3b5bff, #c04bff);
+  font: 700 18px ui-monospace, monospace; color: #fff;
+}
+h1 { font-size: clamp(20px, 5vw, 26px); line-height: 1.15; color: #fff; }
+header p { margin-top: 4px; font-size: 14px; color: #8e97ad; }
+
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tags li {
+  display: flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / .06);
+  border: 1px solid rgb(255 255 255 / .1);
+  font-size: 15px;
+  /* each tag gets its own dot colour from its position */
+  --hue: calc(sibling-index() * 41);
+  transition:
+    opacity .28s ease,
+    scale .32s cubic-bezier(.3, 1.5, .5, 1),
+    display .32s allow-discrete;
+  transition-delay: calc((sibling-count() - sibling-index()) * 14ms);
+}
+.tags li:not(.more)::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  background: hsl(var(--hue) 85% 62%);
+}
+
+/* THE TRICK: hide every tag from the 4th onwards */
+.tags li:nth-child(n + 4) { display: none; opacity: 0; scale: .6; }
+
+/* "all" checked: show every tag, cascading in order */
+.card:has(#all:checked) .tags li {
+  display: flex; opacity: 1; scale: 1;
+  transition-delay: calc((sibling-index() - 4) * 24ms);
+}
+@starting-style {
+  .card:has(#all:checked) .tags li { opacity: 0; scale: .6; }
+}
+
+/* the "+N more" chip is always visible */
+.tags li.more {
+  position: relative;
+  display: flex; opacity: 1; scale: 1;
+  background: #49dc7f; border-color: #49dc7f;
+  color: #0b1210; font-weight: 700;
+  transition: none;
+}
+/* count the tags: (all siblings) minus (3 shown + the chip itself) */
+.tags li.more::after {
+  counter-reset: hidden calc(sibling-count() - 4);
+  content: "+" counter(hidden) " more";
+}
+.card:has(#all:checked) .tags li.more::after { content: "show less"; }
+
+/* the labels cover the chip, so the whole chip is clickable */
+.more label { position: absolute; inset: 0; border-radius: inherit; cursor: pointer; }
+.more .show-few { display: none; }
+.card:has(#all:checked) .more .show-all { display: none; }
+.card:has(#all:checked) .more .show-few { display: block; }
+
+/* keyboard: the radios are focusable, so ring the chip when they are */
+.card:has(#few:focus-visible, #all:focus-visible) .tags li.more {
+  outline: 3px solid #fff; outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.hint { margin-top: 16px; font-size: 14px; color: #8e97ad; text-align: center; }
+
+/* Fallback: browsers without sibling-count() show a plain "more" chip */
+@supports not (order: sibling-count()) {
+  .tags li.more::after { content: "more"; }
+  .card:has(#all:checked) .tags li.more::after { content: "show less"; }
+  .tags li { transition-delay: 0s; }
+  .card:has(#all:checked) .tags li { transition-delay: 0s; }
+  .tags li:not(.more)::before { background: #49dc7f; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tags li { transition: none !important; }
+}
