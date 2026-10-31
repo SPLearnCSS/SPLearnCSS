@@ -14,6 +14,7 @@ SPLearnCSS channels.
 
 | Project | What it shows | Live demo |
 |---|---|---|
+| [Animated FAB Menu](./fab-menu-starting-style) | A + button that fans out into 4 actions and animates in and out of `display: none` with `@starting-style` and `transition-behavior: allow-discrete`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/fab-menu-starting-style/) |
 | [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
 | [Show 3 Tags + "+N more"](./show-3-tags) | Shows the first 3 tags and an automatic "+17 more" chip with `:nth-child(n + 4)`, `:has()` and `sibling-count()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/show-3-tags/) |
 | [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
