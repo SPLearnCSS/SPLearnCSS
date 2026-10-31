@@ -1,0 +1,381 @@
+/* =========================================================
+   CSS random() — live demos (SPLearnCSS)
+   Every effect on this page is pure CSS. No JavaScript.
+
+   Browser support (Oct 2026): Safari 26.2+, Chrome 156+,
+   Edge follows Chrome. Firefox: behind a flag only.
+   Each demo declares a plain fallback value FIRST, then the
+   random() value. A browser that doesn't understand random()
+   drops that declaration and keeps the fallback.
+   ========================================================= */
+
+/* Layout: one column of demo sections; each section pairs a live stage with its code. */
+:root {
+  --bg: #0e0f14;
+  --surface: #171922;
+  --stage: #12131a;
+  --line: #2a2d3a;
+  --fg: #e9eaf2;
+  --muted: #9a9db0;
+  --accent: #a78bfa;
+  --accent-2: #5eead4;
+  --note-1: #c4b5fd;
+  --note-2: #99f6e4;
+  --note-3: #fde68a;
+  --ink: #16171f;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f5f9; --surface: #ffffff; --stage: #ecedf4; --line: #d9dae5;
+    --fg: #16171f; --muted: #575a6c; --accent: #6d4ae0; --accent-2: #0f8f84;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f5f5f9; --surface: #ffffff; --stage: #ecedf4; --line: #d9dae5;
+  --fg: #16171f; --muted: #575a6c; --accent: #6d4ae0; --accent-2: #0f8f84;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 1rem/1.6 var(--body);
+}
+
+.page {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-block: 3rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 3.5rem;
+}
+
+/* ---------- header ---------- */
+.intro { display: grid; gap: 1rem; max-width: 42rem; }
+.eyebrow {
+  font: 600 0.75rem/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+h1 {
+  margin: 0;
+  font: 800 clamp(2.4rem, 7vw, 4.2rem)/1 var(--display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 code { font: inherit; color: var(--accent); }
+.intro p { margin: 0; color: var(--muted); font-size: 1.1rem; }
+.support { font: 500 0.85rem/1.5 var(--mono); color: var(--muted); }
+
+/* Shown only in browsers that can't run random() yet */
+.no-support {
+  display: none;
+  border: 1px dashed var(--accent);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--fg);
+}
+@supports not (rotate: random(0deg, 1deg)) {
+  .no-support { display: block; }
+}
+
+/* ---------- demo sections ---------- */
+.demo {
+  display: grid;
+  gap: 1.25rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.demo header { display: grid; gap: 0.4rem; max-width: 42rem; }
+.demo h2 {
+  margin: 0;
+  font: 700 1.6rem/1.15 var(--display);
+  text-wrap: balance;
+}
+.demo header p { margin: 0; color: var(--muted); }
+.demo header p code, .tip code {
+  font: 500 0.88em var(--mono);
+  color: var(--accent-2);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 760px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+
+.stage {
+  min-width: 0;
+  min-height: 300px;
+  border-radius: 14px;
+  background: var(--stage);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  overflow: hidden;
+}
+
+pre {
+  min-width: 0;
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font: 400 0.9rem/1.65 var(--mono);
+  color: var(--fg);
+}
+pre .r { color: var(--accent); font-weight: 600; }   /* random(...) calls */
+pre .c { color: var(--muted); }                       /* comments */
+
+.tip { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+.reroll {
+  justify-self: start;
+  font: 600 0.9rem/1 var(--body);
+  color: var(--fg);
+  text-decoration: none;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.reroll:hover { border-color: var(--accent); }
+
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+/* =========================================================
+   DEMO 1 — Scattered sticky notes
+   Each note rolls its own angle and offset on page load.
+   ========================================================= */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 3vw, 28px);
+  width: min(100%, 560px);
+}
+.note {
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  background: var(--note-1);
+  box-shadow: 0 12px 24px rgb(0 0 0 / 0.35);
+  padding: 12%;
+  display: grid;
+  align-content: start;
+  gap: 10%;
+
+  rotate: -2deg;                                  /* fallback */
+  rotate: random(-12deg, 12deg);                  /* every note: its own angle */
+  translate: random(-8px, 8px) random(-8px, 8px); /* x and y roll separately */
+}
+.note:nth-child(3n + 2) { background: var(--note-2); }
+.note:nth-child(3n) { background: var(--note-3); }
+.note i { display: block; height: 7px; border-radius: 4px; background: rgb(22 23 31 / 0.18); }
+.note i:first-child { width: 62%; background: rgb(22 23 31 / 0.5); }
+
+/* =========================================================
+   DEMO 2 — The step value
+   random(0deg, 90deg, 15deg) can only land on 0, 15, 30 … 90.
+   ========================================================= */
+.dials {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 72px));
+  gap: clamp(14px, 4vw, 28px);
+}
+.dial {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--surface);
+}
+.dial::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background: var(--fg);
+}
+.needle {
+  position: absolute;
+  inset: 0;
+  rotate: 45deg;                         /* fallback */
+  rotate: random(0deg, 90deg, 15deg);    /* snaps to steps of 15deg */
+}
+.needle::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: calc(50% - 3px);
+  width: 42%; height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+/* =========================================================
+   DEMO 3 — Hand-made tilt + straighten on hover
+   The random angle doesn't re-roll when hover ends.
+   ========================================================= */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  max-width: 420px;
+}
+.badge {
+  font: 700 1.05rem/1 var(--body);
+  color: var(--ink);
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  background: var(--note-1);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
+  cursor: default;
+
+  rotate: -2deg;                     /* fallback */
+  rotate: random(-4deg, 4deg);       /* small range = hand-made feel */
+  transition: rotate 0.3s ease, scale 0.3s ease;
+}
+.badge:nth-child(3n + 2) { background: var(--note-2); }
+.badge:nth-child(3n) { background: var(--note-3); }
+.badge:hover,
+.badge:focus-visible {
+  rotate: 0deg;
+  scale: 1.08;
+}
+
+/* =========================================================
+   DEMO 4 — Twinkling stars, never in sync
+   Negative random delays start each star mid-cycle.
+   ========================================================= */
+.sky {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  border-radius: 12px;
+  background: radial-gradient(120% 90% at 50% 0%, #241f52, #08090e);
+  /* fallback: a tidy grid of stars */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 28px;
+}
+.star {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #f4f4ff;
+  box-shadow: 0 0 12px 3px rgb(153 246 228 / 0.6);
+  animation: twinkle 2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% { opacity: 0.15; scale: 0.5; }
+}
+@supports (top: random(0%, 1%)) {
+  .sky { display: block; padding: 0; }
+  .star {
+    position: absolute;
+    left: random(3%, 96%);
+    top: random(5%, 92%);
+    /* own speed and own head start for every star */
+    animation-duration: random(1.5s, 3s);
+    animation-delay: random(-3s, 0s);
+  }
+}
+
+/* =========================================================
+   DEMO 5 — A natural entrance
+   Random delays instead of an nth-child stagger.
+   ========================================================= */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 420px);
+}
+.tile {
+  aspect-ratio: 3 / 2;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  position: relative;
+  animation: rise 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  animation-delay: random(0s, 0.6s);
+}
+.tile:nth-child(odd) { border-color: var(--accent); }
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 16% 16% auto;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line);
+  box-shadow: 0 20px 0 var(--line);
+}
+@keyframes rise {
+  from { opacity: 0; translate: 0 30px; }
+}
+
+/* =========================================================
+   DEMO 6 — The gotcha: circles that turn into ovals
+   A custom property stores the random() FUNCTION, not a number,
+   so every var(--size) rolls again. element-scoped shares one
+   roll across all properties of the same element.
+   ========================================================= */
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+.field {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  font: 600 0.8rem/1.2 var(--mono);
+  color: var(--muted);
+  text-align: center;
+}
+.dots {
+  width: 100%;
+  min-height: 180px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.dot {
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --size: 40px;                                  /* fallback */
+  width: var(--size);
+  height: var(--size);
+}
+/* Custom properties accept ANY value, so the "plain value first" fallback
+   trick doesn't work for them: guard them with @supports instead. */
+@supports (width: random(element-scoped, 1px, 2px)) {
+  .ovals .dot { --size: random(18px, 64px); }                  /* width ≠ height */
+  .circles .dot { --size: random(element-scoped, 18px, 64px); } /* width = height */
+}
+
+/* ---------- motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .star, .tile { animation: none; }
+  .badge { transition: none; }
+}

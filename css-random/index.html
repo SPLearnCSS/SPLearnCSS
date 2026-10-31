@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CSS random() Demos</title>
+  <meta name="description" content="Scattered cards, hand-made tilts and out-of-sync animations with the CSS random() function. Zero JavaScript.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<main class="page">
+
+  <header class="intro">
+    <span class="eyebrow">SPLearnCSS · zero JavaScript</span>
+    <h1>CSS can generate <code>random()</code> values now</h1>
+    <p>Six live demos from the video. Reload the page and every card, angle and star rolls a new value.</p>
+    <p class="support">Works in Safari 26.2+ and Chrome 156+ (Edge follows Chrome). Firefox: behind a flag.</p>
+    <p class="no-support">Your browser doesn't support <code>random()</code> yet, so you're seeing the fallback values. Open this page in Safari 26.2+ or Chrome 156+ to see the real thing.</p>
+  </header>
+
+  <!-- DEMO 1 -->
+  <section class="demo" aria-labelledby="d1">
+    <header>
+      <h2 id="d1">Scattered sticky notes</h2>
+      <p>One rule, twelve notes, twelve different angles. Every element rolls its own value.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="board" aria-hidden="true">
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+          <div class="note"><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <pre><code>.note {
+  rotate: -2deg; <span class="c">/* fallback */</span>
+  rotate: <span class="r">random(-12deg, 12deg)</span>;
+  translate: <span class="r">random(-8px, 8px)</span>
+             <span class="r">random(-8px, 8px)</span>;
+}</code></pre>
+    </div>
+    <a class="reroll" href="">Reload for a new layout ↻</a>
+  </section>
+
+  <!-- DEMO 2 -->
+  <section class="demo" aria-labelledby="d2">
+    <header>
+      <h2 id="d2">Snap to a step</h2>
+      <p>A third value is the step. Each needle can only land on 0°, 15°, 30° and so on, up to 90°.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="dials" aria-hidden="true">
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+          <div class="dial"><span class="needle"></span></div>
+        </div>
+      </div>
+      <pre><code>.needle {
+  rotate: 45deg; <span class="c">/* fallback */</span>
+  rotate: <span class="r">random(0deg, 90deg, 15deg)</span>;
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- DEMO 3 -->
+  <section class="demo" aria-labelledby="d3">
+    <header>
+      <h2 id="d3">A hand-made tilt</h2>
+      <p>Keep the range small and it just feels hand-made. Hover or tab to a badge: it straightens, then tilts back to the same angle.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="badges">
+          <span class="badge" tabindex="0">New</span>
+          <span class="badge" tabindex="0">Sale</span>
+          <span class="badge" tabindex="0">Hot</span>
+          <span class="badge" tabindex="0">-20%</span>
+          <span class="badge" tabindex="0">Free ship</span>
+          <span class="badge" tabindex="0">Last 3</span>
+        </div>
+      </div>
+      <pre><code>.badge {
+  rotate: <span class="r">random(-4deg, 4deg)</span>;
+  transition: rotate .3s;
+}
+.badge:hover {
+  rotate: 0deg;
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- DEMO 4 -->
+  <section class="demo" aria-labelledby="d4">
+    <header>
+      <h2 id="d4">Stars that never blink in sync</h2>
+      <p>Random position, random speed, and a random <em>negative</em> delay, so every star starts partway through its cycle.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="sky" aria-hidden="true">
+          <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+          <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+          <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+          <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+        </div>
+      </div>
+      <pre><code>.star {
+  left: <span class="r">random(3%, 96%)</span>;
+  top: <span class="r">random(5%, 92%)</span>;
+  animation: twinkle 2s infinite;
+  animation-duration: <span class="r">random(1.5s, 3s)</span>;
+  animation-delay: <span class="r">random(-3s, 0s)</span>;
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- DEMO 5 -->
+  <section class="demo" aria-labelledby="d5">
+    <header>
+      <h2 id="d5">A natural entrance</h2>
+      <p>Give every tile a random delay instead of an <code>nth-child</code> stagger. The grid arrives instead of marching in.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="tiles" aria-hidden="true">
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+        </div>
+      </div>
+      <pre><code>.tile {
+  animation: rise .5s both;
+  animation-delay: <span class="r">random(0s, .6s)</span>;
+}</code></pre>
+    </div>
+    <a class="reroll" href="">Reload to replay ↻</a>
+  </section>
+
+  <!-- DEMO 6 -->
+  <section class="demo" aria-labelledby="d6">
+    <header>
+      <h2 id="d6">The gotcha: circles that turn into ovals</h2>
+      <p>A custom property stores the <code>random()</code> function, not its result, so every <code>var(--size)</code> rolls again. Add <code>element-scoped</code> to share one roll per element.</p>
+    </header>
+    <div class="pair">
+      <div class="stage">
+        <div class="fields">
+          <div class="field ovals">
+            <div class="dots" aria-hidden="true"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+            <span>without element-scoped</span>
+          </div>
+          <div class="field circles">
+            <div class="dots" aria-hidden="true"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+            <span>with element-scoped</span>
+          </div>
+        </div>
+      </div>
+      <pre><code><span class="c">/* ovals: width and height roll separately */</span>
+.dot { --size: <span class="r">random(18px, 64px)</span>; }
+
+<span class="c">/* circles: one roll per element */</span>
+.dot {
+  --size: <span class="r">random(element-scoped,
+            18px, 64px)</span>;
+  width: var(--size);
+  height: var(--size);
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="demo" aria-labelledby="d7">
+    <header>
+      <h2 id="d7">Safe to ship</h2>
+      <p>Write a plain value first. Browsers without <code>random()</code> drop the second line and keep the first.</p>
+    </header>
+    <pre><code>.card {
+  rotate: -2deg;                  <span class="c">/* everyone */</span>
+  rotate: <span class="r">random(-12deg, 12deg)</span>;  <span class="c">/* browsers with random() */</span>
+}
+
+<span class="c">/* or wrap a bigger change in @supports */</span>
+@supports (rotate: <span class="r">random(0deg, 1deg)</span>) {
+  .card { rotate: <span class="r">random(-12deg, 12deg)</span>; }
+}</code></pre>
+  </section>
+
+</main>
+</body>
+</html>
