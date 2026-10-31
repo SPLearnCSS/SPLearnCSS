@@ -1,0 +1,247 @@
+/* Liquid tab bar: pure CSS, no JavaScript.
+   - The checked tab becomes the anchor (anchor-name: --on).
+   - The blob, bump and drop are positioned with anchor() and transition when the anchor moves.
+   - An SVG "goo" filter melts the bump and drop into the bar, so the bar bulges like liquid. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 24px;
+  padding: 24px 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(60% 50% at 50% 40%, #10201a, #070909 75%);
+  color: #f4f8f4;
+}
+
+/* ---------- the app card ---------- */
+.app {
+  --c: #49dc7f;              /* active colour, set per tab below */
+  --ease: cubic-bezier(.65, 0, .25, 1);
+  position: relative;
+  width: min(100%, 440px);
+  height: 300px;
+  border-radius: 28px;
+  background: linear-gradient(165deg, #1c1733 0%, #11131d 60%, #0d1016 100%);
+  border: 1px solid rgba(255, 255, 255, .08);
+  overflow: hidden;
+}
+
+.app:has(#r1:checked) { --c: #49dc7f; }
+.app:has(#r2:checked) { --c: #5aa9ff; }
+.app:has(#r3:checked) { --c: #ff6fa8; }
+.app:has(#r4:checked) { --c: #ffb547; }
+
+/* ---------- page titles: the checked tab picks the title ---------- */
+.titles {
+  position: absolute;
+  inset: 32px 32px auto;
+  height: 110px;
+}
+
+.title {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity .28s ease, translate .45s var(--ease);
+}
+
+.title h1 {
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.title h1 i {
+  font-style: normal;
+  color: var(--c);
+  transition: color .45s;
+}
+
+.title p {
+  margin-top: 10px;
+  font-size: 17px;
+  color: #9aa3b8;
+}
+
+.app:has(#r1:checked) .t1,
+.app:has(#r2:checked) .t2,
+.app:has(#r3:checked) .t3,
+.app:has(#r4:checked) .t4 {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---------- the tab bar ---------- */
+.tabbar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 20px;
+  height: 76px;
+}
+
+/* Layer 1: everything inside .goo melts together.
+   Note: filter makes .goo a containing block, so the anchors (.tab)
+   and the anchored shapes (.bump, .drop) must both live inside it. */
+.goo {
+  position: absolute;
+  inset: -40px 0 0;
+  filter: url(#goo);
+}
+
+.bar-shape,
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 76px;
+  border-radius: 38px;
+  background: #262d40;
+}
+
+.bar {
+  pointer-events: none;      /* the sharp copy is only for looks; taps go to the tabs */
+}
+
+.tabs {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: 76px;
+  display: flex;
+}
+
+.tab {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ✨ the whole trick: the checked tab is the anchor */
+.tab:has(:checked) {
+  anchor-name: --on;
+}
+
+.bump,
+.drop,
+.blob {
+  position: absolute;
+  position-anchor: --on;
+  left: anchor(left);
+  right: anchor(right);
+  margin-inline: auto;       /* centre the fixed width between left and right */
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bump {                       /* the liquid bulge, same colour as the bar */
+  top: calc(anchor(top) - 27px);
+  width: 68px;
+  height: 68px;
+  background: #262d40;
+  transition: .45s var(--ease);
+}
+
+.drop {                       /* a slower droplet: it lags behind and stretches the liquid */
+  top: calc(anchor(top) - 2px);
+  width: 44px;
+  height: 44px;
+  background: #262d40;
+  transition: .85s cubic-bezier(.5, 0, .15, 1);
+}
+
+/* Layer 2: sharp, unfiltered (it can still anchor to the tabs inside .goo) */
+.blob {
+  top: calc(anchor(top) - 19px);
+  width: 52px;
+  height: 52px;
+  background: var(--c);
+  box-shadow: 0 6px 20px -4px var(--c);
+  transition: .45s var(--ease);
+  pointer-events: none;
+}
+
+.icons {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: 76px;
+  display: flex;
+  pointer-events: none;      /* clicks go through to the tabs */
+}
+
+.icon {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: #c3cbdd;
+  transition: translate .45s var(--ease), color .15s;
+}
+
+.icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.app:has(#r1:checked) .i1,
+.app:has(#r2:checked) .i2,
+.app:has(#r3:checked) .i3,
+.app:has(#r4:checked) .i4 {
+  translate: 0 -31px;
+  color: #0b1210;
+  transition: translate .45s var(--ease), color .2s .28s;   /* turn dark once the blob arrives */
+}
+
+/* keyboard users: show focus on the blob */
+.app:has(.tab input:focus-visible) .blob {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+/* respect reduced motion: no travel, just a quick fade */
+@media (prefers-reduced-motion: reduce) {
+  .bump, .drop, .blob, .icon, .title { transition-duration: .01s !important; transition-delay: 0s !important; }
+}
+
+/* browsers without anchor positioning: no liquid, but the active icon still shows */
+@supports not (anchor-name: --on) {
+  .bump, .drop, .blob { display: none; }
+  .app:has(#r1:checked) .i1,
+  .app:has(#r2:checked) .i2,
+  .app:has(#r3:checked) .i3,
+  .app:has(#r4:checked) .i4 { translate: 0 0; color: var(--c); }
+}
+
+.credit {
+  font-size: 14px;
+  color: #aebbb5;
+  text-align: center;
+}
+
+.credit a {
+  color: #49dc7f;
+}

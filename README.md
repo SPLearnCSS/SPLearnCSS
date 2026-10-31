@@ -2,34 +2,46 @@
 
 Learn HTML and CSS by building creative web projects!
 
-This repository contains the source code for tutorials on my
-SPLearnCSS YouTube channel.
+This repository contains the source code for the tutorials, reels and Shorts on the
+SPLearnCSS channels.
 
 ## 📺 Watch the tutorials
 
-www.youtube.com/@SPLearnCSS
+- YouTube: [youtube.com/@SPLearnCSS](https://www.youtube.com/@SPLearnCSS)
+- Instagram: [@splearncss](https://www.instagram.com/splearncss/)
 
 ## 🚀 Projects
 
-- [Carousel Without JavaScript](./Carousel%20Without%20JavaScript)
+| Project | What it shows | Live demo |
+|---|---|---|
+| [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
+| [Carousel Without JavaScript](./Carousel%20Without%20JavaScript) | A scroll-snap carousel with CSS scroll markers | [Try it](https://splearncss.github.io/SPLearnCSS/Carousel%20Without%20JavaScript/) |
+| [CSS Tabs using details and summary](./CSS%20Tabs%20using%20details%20and%20summary) | Tabs built from native `<details>` and `<summary>` | [Try it](https://splearncss.github.io/SPLearnCSS/CSS%20Tabs%20using%20details%20and%20summary/) |
+| [Style Native Select](./Style%20Native%20Select) | Styling the native `<select>` element | [Try it](https://splearncss.github.io/SPLearnCSS/Style%20Native%20Select/) |
 
-More projects coming soon!
+New projects are added with every reel.
 
 ## 💻 How to use the code
 
-1. Open the project folder you want to explore.
-2. Download the repository using Code → Download ZIP.
-3. Extract the ZIP file.
-4. Open the project's index.html file in your browser.
+1. Click **Try it** to see the project working in your browser.
+2. Open the project folder to read `index.html` and `css/styles.css`.
+3. To run it on your computer: **Code → Download ZIP**, extract it, and open the project's `index.html` in your browser.
 
 You can also open the project in VS Code to explore and edit the code.
+
+Some projects use brand-new CSS features, so try them in an up-to-date browser. The liquid tab bar also includes a fallback for older browsers.
 
 ## 🛠️ Built with
 
 - HTML
 - CSS
 
+## 📄 License
+
+The code is free to use in your own projects, including commercial ones, under the [MIT License](./LICENSE).
+A credit or a link back to SPLearnCSS is always appreciated.
+
 ## ⭐ Support the channel
 
 If these tutorials help you, give this repository a star
-and subscribe to SPLearnCSS on YouTube!
+and follow SPLearnCSS on YouTube and Instagram!
