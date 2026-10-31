@@ -14,6 +14,7 @@ SPLearnCSS channels.
 
 | Project | What it shows | Live demo |
 |---|---|---|
+| [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
 | [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
 | [Carousel Without JavaScript](./Carousel%20Without%20JavaScript) | A scroll-snap carousel with CSS scroll markers | [Try it](https://splearncss.github.io/SPLearnCSS/Carousel%20Without%20JavaScript/) |
 | [CSS Tabs using details and summary](./CSS%20Tabs%20using%20details%20and%20summary) | Tabs built from native `<details>` and `<summary>` | [Try it](https://splearncss.github.io/SPLearnCSS/CSS%20Tabs%20using%20details%20and%20summary/) |
@@ -29,7 +30,7 @@ New projects are added with every reel.
 
 You can also open the project in VS Code to explore and edit the code.
 
-Some projects use brand-new CSS features, so try them in an up-to-date browser. The liquid tab bar also includes a fallback for older browsers.
+Some projects use brand-new CSS features, so try them in an up-to-date browser. The liquid tab bar and the `random()` demos also include fallbacks for older browsers.
 
 ## 🛠️ Built with
 
