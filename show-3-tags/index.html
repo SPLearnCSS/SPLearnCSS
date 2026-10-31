@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Show 3 tags + "+N more" | SPLearnCSS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main>
+    <article class="card">
+      <header>
+        <div class="avatar" aria-hidden="true">SP</div>
+        <div>
+          <h1>Building a design system</h1>
+          <p>8 min read · @splearncss</p>
+        </div>
+      </header>
+
+      <!-- Two radios hold the state: "few" (default) or "all". No JavaScript. -->
+      <input type="radio" name="view" id="few" class="sr-only" checked>
+      <input type="radio" name="view" id="all" class="sr-only">
+
+      <ul class="tags" aria-label="Topics">
+        <li>flex</li><li>grid</li><li>anchor</li><li>figma</li><li>tokens</li>
+        <li>a11y</li><li>motion</li><li>react</li><li>svg</li><li>color</li>
+        <li>type</li><li>layout</li><li>ux</li><li>vite</li><li>next</li>
+        <li>tailwind</li><li>gsap</li><li>html</li><li>web</li><li>ui</li>
+        <li class="more">
+          <label for="all" class="show-all"><span class="sr-only">Show all tags</span></label>
+          <label for="few" class="show-few"><span class="sr-only">Show fewer tags</span></label>
+        </li>
+      </ul>
+    </article>
+    <p class="hint">Add or remove a tag in the HTML. The "+N more" count updates by itself.</p>
+  </main>
+</body>
+</html>
