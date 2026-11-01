@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stop the page jumping with aspect-ratio | SPLearnCSS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main>
+    <!-- Two checkboxes hold the state. No JavaScript.
+         #loaded  = the image has arrived
+         #fix     = aspect-ratio is switched on -->
+    <div class="controls">
+      <label class="switch"><input type="checkbox" id="loaded"> <span>Load the image</span></label>
+      <label class="switch"><input type="checkbox" id="fix" checked> <span>Use <code>aspect-ratio</code></span></label>
+    </div>
+
+    <article class="page">
+      <div class="tag">PERFORMANCE</div>
+      <figure class="hero">
+        <div class="placeholder">loading image…</div>
+        <!-- Stands in for <img src="…">: it has no height until it "loads" -->
+        <div class="img" role="img" aria-label="Sunset over purple mountains">
+          <div class="sun"></div><div class="m1"></div><div class="m2"></div>
+        </div>
+      </figure>
+      <h1>How we made our blog load 2× faster</h1>
+      <p class="meta">6 min read · @splearncss</p>
+      <p>Readers kept losing their place. They started reading, an image arrived, and the whole article slid down the screen.</p>
+      <p>The fix was not a faster server. It was telling the browser how much space the image needs before it loads.</p>
+    </article>
+
+    <p class="hint">Turn <code>aspect-ratio</code> off, then tick "Load the image": the text jumps. Turn it on: the space is saved and nothing moves.</p>
+  </main>
+</body>
+</html>

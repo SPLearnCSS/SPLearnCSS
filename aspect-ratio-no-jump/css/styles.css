@@ -1,0 +1,97 @@
+/* Stop the page jumping when an image loads — aspect-ratio, 0 JS
+   The problem: an image with width: 100% and height: auto has no height
+   until it downloads, so the text below it jumps down when it arrives
+   (a "layout shift", measured as CLS).
+   The fix: aspect-ratio: 16 / 9 gives the box its height straight away,
+   from its width, so the space is saved before the image arrives.
+   (For a real <img>, setting width and height attributes does the same.) */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: start center;
+  padding: 24px 16px;
+  background: radial-gradient(60% 50% at 50% 30%, #10201a, #070909 72%);
+  font-family: system-ui, sans-serif;
+  color: #e6eaf4;
+}
+
+main { width: min(640px, 100%); }
+
+/* --- controls (checkboxes, styled as switches) --- */
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.switch {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 12px;
+  background: #11161a; border: 1px solid #22302a;
+  cursor: pointer; font-weight: 600;
+}
+.switch input { width: 20px; height: 20px; accent-color: #49dc7f; }
+.switch:has(:focus-visible) { outline: 3px solid #49dc7f; outline-offset: 2px; }
+code { font-family: ui-monospace, monospace; color: #49dc7f; }
+
+/* --- the blog page --- */
+.page {
+  padding: 22px;
+  border-radius: 22px;
+  background: #fff;
+  color: #14181f;
+}
+.tag { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #1fa35a; }
+h1 { font-size: clamp(24px, 6vw, 34px); line-height: 1.15; margin-bottom: 6px; }
+.meta { font-size: 14px; color: #6b7380; margin-bottom: 14px; }
+.page p:not(.meta) { font-size: 17px; line-height: 1.55; color: #2a313c; margin-bottom: 12px; }
+
+/* --- the image box --- */
+.hero {
+  position: relative;
+  width: 100%;
+  margin: 10px 0 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #e8ecf1;
+}
+
+/* THE FIX: the box knows its height before the image arrives */
+main:has(#fix:checked) .hero { aspect-ratio: 16 / 9; }
+
+/* grey placeholder, only useful when the space is saved */
+.placeholder {
+  position: absolute; inset: 0;
+  display: none; place-items: center;
+  font: 600 14px ui-monospace, monospace; color: #7a8494;
+}
+main:has(#fix:checked) .placeholder { display: grid; }
+
+/* the "image": like an <img> with height: auto, it is 0px tall until loaded */
+.img {
+  position: relative;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffb86b, #ff7a8a 48%, #5b4b9a);
+  transition: opacity .5s ease;
+}
+main:has(#loaded:checked) .img { height: auto; aspect-ratio: 16 / 9; opacity: 1; }
+
+.sun { position: absolute; width: 18%; aspect-ratio: 1; border-radius: 50%; left: 50%; top: 26%;
+  background: #ffe9b0; box-shadow: 0 0 40px #ffe9b0; }
+.m1, .m2 { position: absolute; left: 0; right: 0; bottom: 0; }
+.m1 { height: 58%; background: #3b3470;
+  clip-path: polygon(0 55%, 18% 18%, 36% 52%, 58% 4%, 80% 48%, 100% 22%, 100% 100%, 0 100%); }
+.m2 { height: 34%; background: #211d44;
+  clip-path: polygon(0 40%, 25% 70%, 48% 20%, 70% 62%, 100% 30%, 100% 100%, 0 100%); }
+
+.hint { margin-top: 14px; color: #aebbb5; font-size: 15px; line-height: 1.5; }
+
+/* Older browsers without aspect-ratio: the classic padding-top hack */
+@supports not (aspect-ratio: 1) {
+  main:has(#fix:checked) .hero { height: 0; padding-top: 56.25%; }
+  main:has(#fix:checked) .img { position: absolute; inset: 0; height: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img { transition: none; }
+}
