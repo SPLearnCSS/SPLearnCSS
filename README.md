@@ -14,6 +14,7 @@ SPLearnCSS channels.
 
 | Project | What it shows | Live demo |
 |---|---|---|
+| [Before vs After: text-wrap](./text-wrap-balance) | A news page whose headlines never leave one word alone on the last line, using `text-wrap: balance` (and `pretty` for paragraphs) at every width, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/text-wrap-balance/) |
 | [Animated FAB Menu](./fab-menu-starting-style) | A + button that fans out into 4 actions and animates in and out of `display: none` with `@starting-style` and `transition-behavior: allow-discrete`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/fab-menu-starting-style/) |
 | [Stop the Page Jumping](./aspect-ratio-no-jump) | An image that loads without pushing the text down, using `aspect-ratio` to save its space, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/aspect-ratio-no-jump/) |
 | [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
