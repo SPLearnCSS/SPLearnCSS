@@ -1,8 +1,8 @@
-/* Stop the page jumping when an image loads — aspect-ratio, 0 JS
+/* Stop the page jumping when an ad or image loads — aspect-ratio, 0 JS
    The problem: an image with width: 100% and height: auto has no height
    until it downloads, so the text below it jumps down when it arrives
    (a "layout shift", measured as CLS).
-   The fix: aspect-ratio: 16 / 9 gives the box its height straight away,
+   The fix: aspect-ratio: 16 / 7 gives the box its height straight away,
    from its width, so the space is saved before the image arrives.
    (For a real <img>, setting width and height attributes does the same.) */
 
@@ -55,7 +55,7 @@ h1 { font-size: clamp(24px, 6vw, 34px); line-height: 1.15; margin-bottom: 6px; }
 }
 
 /* THE FIX: the box knows its height before the image arrives */
-main:has(#fix:checked) .hero { aspect-ratio: 16 / 9; }
+main:has(#fix:checked) .hero { aspect-ratio: 16 / 7; }
 
 /* grey placeholder, only useful when the space is saved */
 .placeholder {
@@ -74,21 +74,27 @@ main:has(#fix:checked) .placeholder { display: grid; }
   background: linear-gradient(180deg, #ffb86b, #ff7a8a 48%, #5b4b9a);
   transition: opacity .5s ease;
 }
-main:has(#loaded:checked) .img { height: auto; aspect-ratio: 16 / 9; opacity: 1; }
+main:has(#loaded:checked) .img { height: auto; aspect-ratio: 16 / 7; opacity: 1; }
 
-.sun { position: absolute; width: 18%; aspect-ratio: 1; border-radius: 50%; left: 50%; top: 26%;
-  background: #ffe9b0; box-shadow: 0 0 40px #ffe9b0; }
-.m1, .m2 { position: absolute; left: 0; right: 0; bottom: 0; }
-.m1 { height: 58%; background: #3b3470;
-  clip-path: polygon(0 55%, 18% 18%, 36% 52%, 58% 4%, 80% 48%, 100% 22%, 100% 100%, 0 100%); }
-.m2 { height: 34%; background: #211d44;
-  clip-path: polygon(0 40%, 25% 70%, 48% 20%, 70% 62%, 100% 30%, 100% 100%, 0 100%); }
+/* the ad's content */
+.img { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 0 22px; color: #fff;
+  background: linear-gradient(120deg, #ff7a1a, #ff3d6e 60%, #c2186b); }
+.img small { font-size: 11px; font-weight: 700; letter-spacing: 2px; opacity: .85; }
+.img b { font-size: clamp(22px, 7vw, 34px); line-height: 1.05; }
+.img em { align-self: flex-start; font-style: normal; font-weight: 800; font-size: 14px;
+  background: #fff; color: #ff3d6e; padding: 6px 14px; border-radius: 999px; }
+.img { height: 0; padding-block: 0; }
+
+/* the button you meant to tap */
+.btn { display: flex; align-items: center; justify-content: center; height: 52px; margin-bottom: 14px;
+  border-radius: 12px; background: #14181f; color: #fff; font-weight: 700; text-decoration: none; }
+.btn:focus-visible { outline: 3px solid #49dc7f; outline-offset: 3px; }
 
 .hint { margin-top: 14px; color: #aebbb5; font-size: 15px; line-height: 1.5; }
 
 /* Older browsers without aspect-ratio: the classic padding-top hack */
 @supports not (aspect-ratio: 1) {
-  main:has(#fix:checked) .hero { height: 0; padding-top: 56.25%; }
+  main:has(#fix:checked) .hero { height: 0; padding-top: 43.75%; }
   main:has(#fix:checked) .img { position: absolute; inset: 0; height: 100%; }
 }
 
