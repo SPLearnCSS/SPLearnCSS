@@ -1,0 +1,133 @@
+/* Center a div: the tier list
+   Six real ways to center a box, ranked S to D.
+   The state lives in radio buttons (which method) and a checkbox (centered or not);
+   :has() on the page reads them, so there is no JavaScript. */
+
+:root {
+  --bg: #0b0e12;
+  --panel: #171c24;
+  --row: #1a2029;
+  --line: #2a3340;
+  --text: #f4f8f4;
+  --muted: #aebbb5;
+  --accent: #49dc7f;
+  --S: #ff7a7f;
+  --A: #ffb547;
+  --B: #ffe07a;
+  --C: #7ee08f;
+  --D: #6fb6ff;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  display: grid;
+  place-items: center; /* S tier, of course */
+  padding: 24px 16px;
+}
+
+.app { width: min(720px, 100%); display: grid; gap: 20px; }
+
+.eyebrow { font: 600 13px/1 ui-monospace, monospace; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: clamp(28px, 7vw, 44px); line-height: 1.1; margin-top: 8px; }
+h1 span { color: var(--accent); }
+.sub { color: var(--muted); margin-top: 8px; }
+
+/* ---------- the board ---------- */
+.board { display: grid; gap: 8px; }
+.tier { display: flex; min-height: 64px; background: var(--row); border-radius: 12px; overflow: hidden; }
+.label {
+  flex: none; width: 64px;
+  display: grid; place-items: center;
+  font: 800 34px/1 system-ui, sans-serif; color: #111;
+}
+.tier[data-tier="S"] .label { background: var(--S); }
+.tier[data-tier="A"] .label { background: var(--A); }
+.tier[data-tier="B"] .label { background: var(--B); }
+.tier[data-tier="C"] .label { background: var(--C); }
+.tier[data-tier="D"] .label { background: var(--D); }
+
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 12px; }
+.chip {
+  position: relative;
+  font: 700 15px/1 ui-monospace, monospace;
+  background: #262e3a; border: 2px solid var(--line); border-radius: 10px;
+  padding: 10px 14px; cursor: pointer;
+}
+/* the radio stays in the page for keyboards and screen readers, just invisible */
+.chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
+.chip:has(:checked) { border-color: var(--accent); background: #1d3a2a; }
+.chip:has(:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- the live demo ---------- */
+.demo {
+  display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
+  background: var(--panel); border: 2px solid var(--line); border-radius: 18px; padding: 18px;
+}
+.box {
+  position: relative; /* for the absolute methods */
+  width: 180px; height: 180px;
+  border: 3px dashed #3a4656; border-radius: 14px;
+  font-size: 0; /* no gap under the inline-block in the table-cell demo */
+}
+.kid { width: 64px; height: 64px; border-radius: 14px; background: var(--accent); box-shadow: 0 0 24px rgb(73 220 127 / .45); }
+
+.side { display: grid; gap: 14px; min-width: 0; }
+.toggle {
+  justify-self: start; position: relative;
+  font-weight: 700; padding: 10px 18px; border-radius: 999px;
+  border: 2px solid var(--accent); color: var(--accent); cursor: pointer;
+}
+.toggle input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.toggle:has(:checked) { background: var(--accent); color: #0b1210; }
+.toggle:has(:focus-visible) { outline: 3px solid var(--text); outline-offset: 3px; }
+
+.code { display: none; font: 15px/1.5 ui-monospace, monospace; color: #d2dcd7; white-space: pre-wrap; }
+
+/* show the code for the chosen method */
+body:has(#m1:checked) .c1, body:has(#m2:checked) .c2, body:has(#m3:checked) .c3,
+body:has(#m4:checked) .c4, body:has(#m5:checked) .c5, body:has(#m6:checked) .c6 { display: block; }
+
+/* each method: the parent/child set-up, then the line that centers it.
+   Before "Center it" is pressed the box sits top-left. */
+body:has(#m1:checked) .kid { position: absolute; top: 0; left: 0; }
+body:has(#m1:checked):has(#center:checked) .kid { top: 50%; left: 50%; translate: -50% -50%; }
+
+body:has(#m2:checked) .box { display: table-cell; vertical-align: top; text-align: left; }
+body:has(#m2:checked) .kid { display: inline-block; }
+body:has(#m2:checked):has(#center:checked) .box { vertical-align: middle; text-align: center; }
+
+body:has(#m3:checked) .box { display: flex; }
+body:has(#m3:checked):has(#center:checked) .kid { margin: auto; }
+
+body:has(#m4:checked) .kid { position: absolute; inset: 0; }
+body:has(#m4:checked):has(#center:checked) .kid { margin: auto; }
+
+body:has(#m5:checked) .box { display: flex; }
+body:has(#m5:checked):has(#center:checked) .box { align-items: center; justify-content: center; }
+
+body:has(#m6:checked) .box { display: grid; }
+body:has(#m6:checked):has(#center:checked) .box { place-items: center; }
+
+.foot { color: var(--muted); font-size: 14px; }
+.foot a { color: var(--accent); }
+.foot a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* small phones: stack the demo */
+@media (max-width: 480px) {
+  .demo { grid-template-columns: 1fr; justify-items: center; }
+  .side { justify-items: center; text-align: left; }
+}
+
+/* browsers without :has(): show every method's code and keep the board usable */
+@supports not selector(:has(*)) {
+  .code { display: block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
