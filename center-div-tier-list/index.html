@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Center a Div: The Tier List | SPLearnCSS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="intro">
+      <p class="eyebrow">SPLearnCSS · tier list</p>
+      <h1>Center a div: <span>the tier list</span></h1>
+      <p class="sub">Pick a method, then press <strong>Center it</strong> to watch the real CSS work. No JavaScript.</p>
+    </header>
+
+    <!-- The radios hold the state; :has() reads them to show the right demo. -->
+    <section class="board" aria-label="Centering tier list">
+      <div class="tier" data-tier="S">
+        <span class="label">S</span>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="method" id="m6" checked> place-items</label>
+        </div>
+      </div>
+      <div class="tier" data-tier="A">
+        <span class="label">A</span>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="method" id="m3"> margin: auto</label>
+          <label class="chip"><input type="radio" name="method" id="m5"> flex center</label>
+        </div>
+      </div>
+      <div class="tier" data-tier="B">
+        <span class="label">B</span>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="method" id="m4"> inset + margin</label>
+        </div>
+      </div>
+      <div class="tier" data-tier="C">
+        <span class="label">C</span>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="method" id="m1"> translate(-50%)</label>
+        </div>
+      </div>
+      <div class="tier" data-tier="D">
+        <span class="label">D</span>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="method" id="m2"> table-cell</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo" aria-label="Live demo">
+      <div class="stage">
+        <div class="box"><div class="kid"></div></div>
+      </div>
+      <div class="side">
+        <label class="toggle"><input type="checkbox" id="center"> Center it</label>
+        <pre class="code c1">position: absolute;
+top: 50%; left: 50%;
+translate: -50% -50%;</pre>
+        <pre class="code c2">display: table-cell;
+vertical-align: middle;
+text-align: center;</pre>
+        <pre class="code c3">/* parent */ display: flex;
+/* child */  margin: auto;</pre>
+        <pre class="code c4">/* child */
+position: absolute;
+inset: 0;
+margin: auto;</pre>
+        <pre class="code c5">display: flex;
+align-items: center;
+justify-content: center;</pre>
+        <pre class="code c6">display: grid;
+place-items: center;</pre>
+      </div>
+    </section>
+
+    <p class="foot">Where would you put them? Tell us on <a href="https://www.instagram.com/splearncss/">@splearncss</a>.</p>
+  </main>
+</body>
+</html>
