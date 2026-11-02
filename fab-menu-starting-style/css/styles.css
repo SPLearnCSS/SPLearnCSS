@@ -1,0 +1,100 @@
+/* Animated FAB menu — @starting-style + transition-behavior: allow-discrete, 0 JS
+   - The items are display: none when closed, so they can't be tabbed to or clicked.
+   - @starting-style gives the "from" values when an item appears,
+     so it can animate in from display: none.
+   - transition-behavior: allow-discrete keeps display: grid until the exit
+     transition has finished, so it animates out too.
+   - :has(.toggle:checked) is the open state. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: radial-gradient(60% 50% at 50% 30%, #10201a, #070909 72%);
+  font-family: system-ui, sans-serif;
+  color: #e6eaf4;
+}
+
+.app {
+  width: min(420px, 100%);
+  min-height: 420px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 22px;
+  border-radius: 28px;
+  background: radial-gradient(80% 90% at 50% 100%, #262046, #14131f 60%, #0d0f16);
+  border: 1px solid rgb(255 255 255 / .08);
+}
+.hint { color: #aebbb5; line-height: 1.5; }
+code { font-family: ui-monospace, monospace; color: #49dc7f; }
+
+.menu { position: relative; align-self: end; justify-self: center; width: 72px; height: 72px; margin-bottom: 8px; }
+
+/* the real checkbox sits under the + button; the label draws the button */
+.toggle { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 3; }
+
+.fab {
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: #49dc7f; color: #0b1210;
+  box-shadow: 0 12px 34px -8px #49dc7f;
+  transition: rotate .45s cubic-bezier(.3, 1.4, .5, 1), background .3s;
+}
+.fab svg { width: 36px; height: 36px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.menu:has(.toggle:checked) .fab { rotate: 135deg; background: #f4f8f4; }
+.menu:has(.toggle:focus-visible) .fab { outline: 3px solid #fff; outline-offset: 4px; }
+
+/* --- the items --- */
+.item {
+  position: absolute; left: 6px; top: 6px;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--c); color: #0b1210;
+  place-items: center;
+  text-decoration: none;
+  box-shadow: 0 10px 28px -8px var(--c);
+
+  /* closed: hidden, small, in the middle of the + button */
+  display: none;
+  translate: 0 0;
+  scale: .2;
+  opacity: 0;
+
+  transition:
+    translate .45s cubic-bezier(.3, 1.5, .5, 1),
+    scale .45s cubic-bezier(.3, 1.5, .5, 1),
+    opacity .3s,
+    display .45s;
+  transition-behavior: allow-discrete;      /* animate out of display: none */
+  transition-delay: calc((3 - var(--i)) * 50ms);
+}
+.item svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.item span { position: absolute; top: 66px; font-size: 13px; font-weight: 700; color: #e9ecf5; }
+.item:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+/* open: fan out, one after another */
+.menu:has(.toggle:checked) .item {
+  display: grid;
+  translate: var(--x) var(--y);
+  scale: 1;
+  opacity: 1;
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+/* where each item starts when it appears (it was display: none) */
+@starting-style {
+  .menu:has(.toggle:checked) .item { translate: 0 0; scale: .2; opacity: 0; }
+}
+
+/* Older browsers: the menu still opens and closes, just without the animation */
+@supports not (transition-behavior: allow-discrete) {
+  .item { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item, .fab { transition: none; }
+}
