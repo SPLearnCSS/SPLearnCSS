@@ -1,0 +1,125 @@
+/* ==========================================================
+   Can CSS select a parent? Yes: :has()
+   SPLearnCSS, pricing cards that light up with zero JavaScript
+   ========================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #F5F6FA;
+  color: #14181F;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #E4E7EE;
+}
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; }
+.logo i { width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, #5B6CFF, #A34DFF); }
+.ttl { margin: 0; color: #5C6472; }
+
+main { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* The card. It is the PARENT of the radio input. */
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  background: #fff;
+  border: 3px solid #E1E4EC;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: border-color .3s, background .3s, translate .35s cubic-bezier(.3, 1.4, .5, 1), box-shadow .3s;
+}
+.plan input {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: #1FA35A;
+}
+.nm { font-weight: 700; font-size: 1.25rem; }
+.pr { font-weight: 700; font-size: 2.5rem; letter-spacing: -1px; margin: 6px 0 10px; }
+.pr small { font-size: 1rem; font-weight: 400; color: #6B7380; letter-spacing: 0; }
+.ft { color: #4A5160; }
+
+/* ---- The trick ----------------------------------------------
+   Old way: input:checked could only style the radio itself
+   (or its later siblings), so a JS change listener had to add
+   an .active class to the card.
+   .plan:has(:checked) reads: "a .plan that contains a checked
+   input". The parent reacts to its child. */
+.plan:has(:checked) {
+  border-color: #49DC7F;
+  background: #EFFFF4;
+  translate: 0 -8px;
+  box-shadow: 0 14px 30px -10px rgba(40, 180, 100, .45);
+}
+
+/* Bonus: the form checks its own children too.
+   No plan picked → Continue is greyed out and the hint shows. */
+button {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  border: 0;
+  border-radius: 14px;
+  background: #14181F;
+  color: #fff;
+  font: 700 1.1rem system-ui, sans-serif;
+  cursor: pointer;
+  transition: opacity .3s;
+}
+.hint { margin: 10px 0 0; text-align: center; color: #6B7380; visibility: hidden; }
+
+.checkout:not(:has(:checked)) button {
+  opacity: .4;
+  pointer-events: none;
+}
+.checkout:not(:has(:checked)) .hint { visibility: visible; }
+
+/* Keyboard users: show focus on the whole card. */
+.plan:has(:focus-visible) {
+  outline: 3px solid #2F6BFF;
+  outline-offset: 3px;
+}
+button:focus-visible { outline: 3px solid #2F6BFF; outline-offset: 3px; }
+
+/* Older browsers without :has(): keep a clear checked radio and an
+   always-usable button, so nothing breaks. */
+@supports not selector(:has(*)) {
+  .plan input { width: 28px; height: 28px; }
+  .hint { display: none; }
+}
+
+/* Respect reduced motion: no lift animation. */
+@media (prefers-reduced-motion: reduce) {
+  .plan, button { transition: none; }
+  .plan:has(:checked) { translate: none; }
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.credit { margin-top: 40px; text-align: center; color: #6B7380; font-size: .9rem; }
+.credit a { color: #1FA35A; }

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can CSS select a parent? :has() pricing cards | SPLearnCSS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="logo"><i></i>Nimbus</div>
+    <p class="ttl">Choose a plan</p>
+  </header>
+
+  <main>
+    <form class="checkout" onsubmit="return false">
+      <fieldset class="plans">
+        <legend class="sr-only">Plan</legend>
+
+        <!-- Each card is a <label> that wraps its radio, so a click anywhere picks it.
+             The card styles itself with .plan:has(:checked), no JavaScript. -->
+        <label class="plan">
+          <input type="radio" name="plan" value="starter">
+          <span class="nm">Starter</span>
+          <span class="pr">$9<small>/mo</small></span>
+          <span class="ft">3 projects</span>
+          <span class="ft">5 GB storage</span>
+        </label>
+
+        <label class="plan">
+          <input type="radio" name="plan" value="pro">
+          <span class="nm">Pro</span>
+          <span class="pr">$19<small>/mo</small></span>
+          <span class="ft">Unlimited projects</span>
+          <span class="ft">100 GB storage</span>
+        </label>
+
+        <label class="plan">
+          <input type="radio" name="plan" value="team">
+          <span class="nm">Team</span>
+          <span class="pr">$49<small>/mo</small></span>
+          <span class="ft">25 seats</span>
+          <span class="ft">1 TB storage</span>
+        </label>
+      </fieldset>
+
+      <button type="submit">Continue</button>
+      <p class="hint">Pick a plan to continue.</p>
+    </form>
+
+    <p class="credit">Made by <a href="https://www.instagram.com/splearncss/">@SPLearnCSS</a>, one CSS trick a day.</p>
+  </main>
+</body>
+</html>
