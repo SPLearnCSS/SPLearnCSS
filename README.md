@@ -14,6 +14,7 @@ SPLearnCSS channels.
 
 | Project | What it shows | Live demo |
 |---|---|---|
+| [Stop the Page Jumping](./aspect-ratio-no-jump) | An image that loads without pushing the text down, using `aspect-ratio` to save its space, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/aspect-ratio-no-jump/) |
 | [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
 | [Show 3 Tags + "+N more"](./show-3-tags) | Shows the first 3 tags and an automatic "+17 more" chip with `:nth-child(n + 4)`, `:has()` and `sibling-count()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/show-3-tags/) |
 | [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
