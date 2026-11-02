@@ -14,6 +14,7 @@ SPLearnCSS channels.
 
 | Project | What it shows | Live demo |
 |---|---|---|
+| [Can CSS Select a Parent? `:has()`](./has-parent-selector) | Pricing cards that light up when their radio is picked, and a Continue button that stays greyed out until you choose, with `:has()` and no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/has-parent-selector/) |
 | [CSS random() Demos](./css-random) | Scattered cards, hand-made tilts, twinkling stars and random entrances with the CSS `random()` function, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/css-random/) |
 | [Show 3 Tags + "+N more"](./show-3-tags) | Shows the first 3 tags and an automatic "+17 more" chip with `:nth-child(n + 4)`, `:has()` and `sibling-count()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/show-3-tags/) |
 | [Liquid Tab Bar](./liquid-tab-bar) | A gooey tab bar that follows the checked tab, built with CSS anchor positioning and `:has()`, with no JavaScript | [Try it](https://splearncss.github.io/SPLearnCSS/liquid-tab-bar/) |
