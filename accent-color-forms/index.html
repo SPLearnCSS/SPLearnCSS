@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brand-coloured forms with accent-color | SPLearnCSS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="card">
+    <fieldset class="swatches">
+      <legend>Theme</legend>
+      <label style="--c: #49dc7f"><input type="radio" name="theme" id="green" checked><span class="sr-only">Green</span></label>
+      <label style="--c: #5aa9ff"><input type="radio" name="theme" id="blue"><span class="sr-only">Blue</span></label>
+      <label style="--c: #ff6fa8"><input type="radio" name="theme" id="pink"><span class="sr-only">Pink</span></label>
+      <label style="--c: #ffb547"><input type="radio" name="theme" id="amber"><span class="sr-only">Amber</span></label>
+    </fieldset>
+
+    <form>
+      <div>
+        <h2>Notifications</h2>
+        <label class="row"><input type="checkbox" checked> New followers</label>
+        <label class="row"><input type="checkbox" checked> Comments</label>
+        <label class="row"><input type="checkbox"> Newsletter</label>
+
+        <h2>Plan</h2>
+        <label class="row"><input type="radio" name="plan"> Free</label>
+        <label class="row"><input type="radio" name="plan" checked> Pro</label>
+      </div>
+      <div>
+        <h2><label for="vol">Volume</label></h2>
+        <input type="range" id="vol" value="70">
+
+        <h2>Upload</h2>
+        <progress value="65" max="100">65%</progress>
+        <p class="pc">65% done</p>
+
+        <h2>Auto-save</h2>
+        <label class="row"><input type="checkbox" checked> Every minute</label>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,72 @@
+/* Brand-coloured forms with ONE property: accent-color, 0 JS
+   accent-color recolours the browser's own checkboxes, radios,
+   range sliders and progress bars. They stay native: accessible,
+   keyboard-friendly, and you don't rebuild them from scratch.
+   The theme picker only changes --brand; accent-color does the rest. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: radial-gradient(60% 50% at 50% 30%, #10201a, #070909 72%);
+  font-family: system-ui, sans-serif;
+  color: #e9ecf5;
+}
+
+.card {
+  --brand: #49dc7f;
+  width: min(640px, 100%);
+  padding: 22px;
+  border-radius: 26px;
+  background: linear-gradient(165deg, #1c1a2e, #121420 60%, #0d1016);
+  border: 1px solid rgb(255 255 255 / .08);
+}
+.card:has(#blue:checked)  { --brand: #5aa9ff; }
+.card:has(#pink:checked)  { --brand: #ff6fa8; }
+.card:has(#amber:checked) { --brand: #ffb547; }
+
+/* THE ONE PROPERTY */
+form {
+  accent-color: var(--brand);
+}
+
+/* --- theme picker --- */
+.swatches { border: 0; display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.swatches legend { float: left; margin-right: auto; font-weight: 700; color: #9aa3b8; }
+.swatches label {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--c); cursor: pointer;
+  transition: box-shadow .3s, scale .3s;
+}
+.swatches input { position: absolute; opacity: 0; pointer-events: none; }
+.swatches label:has(:checked) { box-shadow: 0 0 0 4px #121420, 0 0 0 7px #fff; scale: 1.08; }
+.swatches label:has(:focus-visible) { outline: 3px solid #fff; outline-offset: 6px; }
+
+/* --- the form --- */
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 28px;
+  color-scheme: dark;          /* dark unchecked boxes */
+}
+h2 { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #7f889c; margin: 12px 0 6px; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 40px; font-size: 17px; cursor: pointer; }
+.row input { width: 22px; height: 22px; }
+input[type="range"], progress { width: 100%; }
+.pc { font-size: 14px; color: #9aa3b8; margin-top: 4px; }
+input:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* accent-color is a colour, so it can transition smoothly */
+@media (prefers-reduced-motion: no-preference) {
+  form, form input, form progress { transition: accent-color .35s; }
+}
+
+/* Very old browsers: the controls just keep the default blue */
+@supports not (accent-color: red) {
+  .swatches::after { content: "Your browser doesn't support accent-color yet."; font-size: 13px; color: #9aa3b8; }
+}

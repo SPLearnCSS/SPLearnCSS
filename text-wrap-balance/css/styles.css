@@ -1,0 +1,71 @@
+/* Before vs after: text-wrap: balance, 0 JS
+   Before: normal wrapping fills each line as far as it can, so a headline
+   often ends with one word on its own line.
+   After: text-wrap: balance makes all the lines about the same length,
+   at every width. Use it on headings (browsers only balance short text,
+   about 6 lines or fewer). For paragraphs, use text-wrap: pretty. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  padding: 24px 16px;
+  background: radial-gradient(60% 50% at 50% 30%, #10201a, #070909 72%);
+  font-family: system-ui, sans-serif;
+  color: #e6eaf4;
+}
+main { width: min(760px, 100%); margin: 0 auto; }
+
+.switch {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 12px;
+  background: #11161a; border: 1px solid #22302a;
+  cursor: pointer; font-weight: 600;
+}
+.switch input { width: 20px; height: 20px; accent-color: #49dc7f; }
+.switch:has(:focus-visible) { outline: 3px solid #49dc7f; outline-offset: 2px; }
+code { font-family: ui-monospace, monospace; color: #49dc7f; }
+.hint { margin: 12px 0 16px; color: #aebbb5; line-height: 1.5; }
+
+/* --- the news page --- */
+.page {
+  width: 100%;
+  min-width: 260px;
+  max-width: 100%;
+  resize: horizontal;          /* drag the bottom-right corner */
+  overflow: auto;
+  padding: 22px;
+  border-radius: 18px;
+  background: #f6f3ee;
+  color: #16130f;
+}
+.top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 3px solid #16130f; padding-bottom: 8px; margin-bottom: 16px;
+  font-family: Georgia, serif;
+}
+.top strong { font-size: 24px; }
+.top span { color: #6b6358; font-size: 14px; }
+.tag { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #c8102e; margin-bottom: 6px; }
+
+h1 { font-size: clamp(26px, 6vw, 40px); line-height: 1.12; letter-spacing: -.5px; margin-bottom: 10px; }
+h2 { font-size: 18px; line-height: 1.3; }
+
+/* THE FIX: even lines on every heading */
+main:has(#balance:checked) :is(h1, h2) { text-wrap: balance; }
+
+/* bonus: no lone word at the end of paragraphs either */
+main:has(#balance:checked) .dek { text-wrap: pretty; }
+
+.by { font-size: 14px; color: #6b6358; margin-bottom: 10px; }
+.dek { font: 18px/1.5 Georgia, serif; color: #3a332b; }
+
+.more {
+  margin-top: 20px; padding-top: 14px; border-top: 2px solid #dad4ca;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px;
+}
+
+/* Older browsers simply keep normal wrapping: nothing breaks */
+@supports not (text-wrap: balance) {
+  .hint::after { content: " (Your browser doesn't support text-wrap: balance yet.)"; }
+}
