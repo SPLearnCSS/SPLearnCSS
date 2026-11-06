@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scattered Photo Stack · ::scroll-marker-group + scroll-state · SPLearnCSS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <main class="demo">
+        <h1>Tap a place. <span>Its card jumps up.</span></h1>
+
+        <!-- The stack is a hidden scroller. Each slide gets a ::scroll-marker (a pill),
+             and the pills come from ::scroll-marker-group. No JavaScript. -->
+        <div class="stack" aria-label="Places">
+            <section class="slide" data-name="Dolomites" aria-label="Dolomites">
+                <figure class="card">
+                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=700&q=80" alt="A wooden boat on a turquoise lake below grey peaks">
+                    <figcaption>Dolomites</figcaption>
+                </figure>
+            </section>
+
+            <section class="slide" data-name="Maldives" aria-label="Maldives">
+                <figure class="card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="A turquoise beach at sunset">
+                    <figcaption>Maldives</figcaption>
+                </figure>
+            </section>
+
+            <section class="slide" data-name="Alps" aria-label="Alps">
+                <figure class="card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Snowy peaks above a sea of clouds">
+                    <figcaption>Alps</figcaption>
+                </figure>
+            </section>
+
+            <section class="slide" data-name="Banff" aria-label="Banff">
+                <figure class="card">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=700&q=80" alt="A green lake between mountains">
+                    <figcaption>Banff</figcaption>
+                </figure>
+            </section>
+
+            <section class="slide" data-name="Yosemite" aria-label="Yosemite">
+                <figure class="card">
+                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=700&q=80" alt="A sunlit valley with a hiker on a rock">
+                    <figcaption>Yosemite</figcaption>
+                </figure>
+            </section>
+        </div>
+
+        <p class="note">Photos: Unsplash. Needs Chrome or Edge 135+ for the pills.</p>
+    </main>
+</body>
+
+</html>
