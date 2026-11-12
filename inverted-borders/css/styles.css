@@ -1,0 +1,239 @@
+/* Inverted borders with border-shape, 0 JS
+   The problem: clip-path can cut a notch out of a card, but it clips
+   everything outside the shape, including the border and the box-shadow.
+   The fix: border-shape takes the same shapes (circle(), polygon(), inset(),
+   shape()) but reshapes the box itself, so the background, border and
+   shadow all follow the outline. The notch is drawn with shape():
+   hline / vline for the edges, arc ... cw for normal corners and
+   arc ... ccw for the inverted corner. Two custom properties control it:
+   --r (corner radius) and --n (notch size).
+   Browsers without border-shape get a normal rounded card (@supports). */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* --- page look (not part of the trick) --- */
+body {
+  min-height: 100vh;
+  background: #0B0F14;
+  color: #F3F5F7;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: clamp(20px, 5vw, 48px) 16px 48px;
+}
+main { max-width: 960px; margin: 0 auto; }
+h1 {
+  font-size: clamp(30px, 6vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+h1 span { color: #FF5A5F; }
+h1 span.ok { color: #49DC7F; }
+h2 { font-size: clamp(22px, 4vw, 30px); margin: 44px 0 12px; letter-spacing: -.5px; }
+.lead { color: #A9B4C0; font-size: 17px; line-height: 1.5; margin: 12px 0 24px; max-width: 60ch; }
+.lead code, .note code, .support code { color: #49DC7F; font-size: .95em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.tag {
+  display: inline-block;
+  font: 800 13px/1.3 system-ui, sans-serif;
+  letter-spacing: 1.5px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  margin: 0 0 14px;
+}
+.tag.bad { background: rgba(255, 90, 95, .16); color: #FF5A5F; }
+.tag.good { background: rgba(73, 220, 127, .14); color: #49DC7F; }
+
+pre {
+  margin-top: 44px;
+  background: #121820;
+  border: 2px solid #232B36;
+  border-radius: 14px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font: 500 15px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+  color: #D7DEE6;
+}
+.note { color: #8A95A3; font-size: 14px; line-height: 1.5; margin-top: 14px; max-width: 70ch; }
+
+.support {
+  display: none;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(253, 224, 71, .12);
+  color: #FDE047;
+  font-size: 15px;
+  line-height: 1.5;
+}
+@supports not (border-shape: inset(0)) {
+  .support { display: block; }
+}
+
+.stage { display: grid; place-items: center; padding: 28px 0 36px; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px; }
+.pair figure { display: grid; justify-items: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* --- THE CARD --- */
+.wrap {
+  --r: 24px;   /* corner radius */
+  --n: 96px;   /* notch size */
+  position: relative;
+  width: min(440px, 100%);
+}
+.card {
+  min-height: 280px;
+  padding: 2rem;
+  background: linear-gradient(135deg, #2b6cff, #7b3cff, #ff4fd8);
+  color: #fff;
+  border: 4px solid #22d3ee;
+  border-radius: var(--r);              /* fallback: a normal rounded card */
+  box-shadow: 0 26px 50px rgb(0 0 0 / .55), 0 0 40px rgb(34 211 238 / .25);
+
+  /* the outline, drawn like a pen (clockwise around the box) */
+  --notch: shape(
+    from var(--r) 0,
+    hline to calc(100% - var(--r)),
+    arc to 100% var(--r) of var(--r) cw,
+    vline to calc(100% - var(--n) - var(--r)),
+    arc to calc(100% - var(--r)) calc(100% - var(--n)) of var(--r) cw,
+    hline to calc(100% - var(--n) + var(--r)),
+    arc to calc(100% - var(--n)) calc(100% - var(--n) + var(--r)) of var(--r) ccw,  /* the inverted corner */
+    vline to calc(100% - var(--r)),
+    arc to calc(100% - var(--n) - var(--r)) 100% of var(--r) cw,
+    hline to var(--r),
+    arc to 0 calc(100% - var(--r)) of var(--r) cw,
+    vline to var(--r),
+    arc to var(--r) 0 of var(--r) cw,
+    close
+  );
+}
+.card h3 { font-size: clamp(26px, 6vw, 34px); line-height: 1.1; }
+.card p { margin-top: 10px; font-size: 18px; line-height: 1.4; opacity: .92; max-width: 26ch; }
+
+@supports (border-shape: inset(0)) {
+  .card { border-shape: var(--notch); }   /* border-radius is ignored from here on */
+}
+
+/* the round button sits in the notch */
+.btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: calc(var(--n) - 14px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #22d3ee;
+  color: #0b1020;
+  display: grid;
+  place-items: center;
+  font: 800 calc(var(--n) * .38) / 1 system-ui, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgb(34 211 238 / .45);
+}
+.btn:focus-visible { outline: 3px solid #49DC7F; outline-offset: 4px; }
+
+/* without border-shape the button sits on the rounded corner instead */
+@supports not (border-shape: inset(0)) {
+  .btn { right: -10px; bottom: -10px; }
+}
+
+/* smooth hover: border-shape itself doesn't animate, but a registered
+   <length> custom property used inside the shape does */
+@property --n {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 96px;
+}
+.hero { transition: --n .45s cubic-bezier(.3, 1.3, .4, 1); }
+.hero:hover, .hero:focus-within { --n: 140px; }
+
+/* --- clip-path vs border-shape --- */
+.small { --r: 18px; --n: 72px; width: min(340px, 100%); }
+.small .card { min-height: 210px; padding: 1.5rem; }
+.small .card h3 { font-size: 24px; }
+/* clip-path cuts the same notch, but clips the border and the shadow away */
+.clip .card { border-radius: 0; clip-path: var(--notch); border-shape: none; }
+
+/* --- two shapes = a cut-out --- */
+.cutout .card {
+  background: none;
+  border-width: 10px;
+  box-shadow: none;
+}
+@supports (border-shape: inset(0)) {
+  .cutout .card { border-shape: inset(0 round var(--r)) var(--notch); }   /* outer shape, inner shape */
+}
+.cutout .btn { background: #0B0F14; color: #22d3ee; box-shadow: none; }
+
+/* --- browser-style tabs --- */
+.win-tabs { width: min(580px, 100%); border-radius: 18px; background: #1B2030; padding-top: 16px; box-shadow: 0 0 0 3px #2A3248; overflow: hidden; }
+.tabs { display: flex; padding: 0 12px; border: 0; }
+.tabs label {
+  position: relative;
+  padding: 14px clamp(22px, 5vw, 34px) 12px;
+  color: #9AA4BD;
+  font-weight: 700;
+  font-size: clamp(16px, 4vw, 20px);
+  cursor: pointer;
+}
+.tabs input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.tabs label:has(:focus-visible) { outline: 3px solid #49DC7F; outline-offset: -3px; border-radius: 10px; }
+.tabs label:has(:checked) {
+  color: #111827;
+  background: #F4F5F9;
+  border-radius: 12px 12px 0 0;   /* fallback */
+}
+@supports (border-shape: inset(0)) {
+  .tabs label:has(:checked) {
+    /* flares out at the bottom with a ccw arc on each side (inside the padding) */
+    border-shape: shape(from 0 100%,
+      arc by 16px -16px of 16px ccw,
+      vline to 16px,
+      arc by 16px -16px of 16px cw,
+      hline to calc(100% - 32px),
+      arc by 16px 16px of 16px cw,
+      vline to calc(100% - 16px),
+      arc by 16px 16px of 16px ccw,
+      close);
+  }
+}
+.panel { min-height: 260px; background: #F4F5F9; padding: 28px; }
+.panel h4 { margin-bottom: 18px; font-size: 26px; color: #111827; }
+.panel h4::after { content: "Recently played"; }
+body:has(#t-music:checked) .panel h4::after { content: "Your playlists"; }
+body:has(#t-profile:checked) .panel h4::after { content: "Your profile"; }
+.panel i { display: block; height: 18px; border-radius: 9px; background: #dfe3ea; margin-top: 14px; }
+
+/* --- a ticket with two bites --- */
+.ticket {
+  width: min(540px, 100%);
+  min-height: 210px;
+  padding: 28px 40px;
+  color: #1c1917;
+  background: linear-gradient(135deg, #FBBF24, #F59E0B);
+  border: 4px solid #FDE047;
+  border-radius: 16px;   /* fallback */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ticket small { font: 800 15px ui-monospace, monospace; letter-spacing: .2em; }
+.ticket h3 { margin: 8px 0 4px; font-size: clamp(24px, 6vw, 34px); }
+.ticket p { font-weight: 600; font-size: 18px; }
+@supports (border-shape: inset(0)) {
+  .ticket {
+    /* the bites stay centred at any height because they use 50% */
+    border-shape: shape(from 0 0,
+      hline to 100%,
+      vline to calc(50% - 18px),
+      arc by 0 36px of 18px ccw,
+      vline to 100%,
+      hline to 0,
+      vline to calc(50% + 18px),
+      arc by 0 -36px of 18px ccw,
+      close);
+  }
+}

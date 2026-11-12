@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inverted Borders with border-shape · SPLearnCSS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <main>
+        <h1>Inverted borders. <span class="ok">One CSS property.</span></h1>
+        <p class="lead">A card with an inverted corner, where the border and the shadow follow the curve. <code>clip-path</code> can cut the corner, but it cuts off the border and shadow too. <code>border-shape</code> reshapes the box itself. Hover the card (or tab to its button) and the notch grows.</p>
+
+        <p class="support">Your browser doesn’t support <code>border-shape</code> yet (Chrome/Edge 147+), so you’re seeing the fallback: a normal rounded card.</p>
+
+        <!-- 1. the card -->
+        <div class="stage">
+            <div class="wrap hero">
+                <article class="card">
+                    <h3>Inverted Borders</h3>
+                    <p>The 2026 way, with one CSS property.</p>
+                </article>
+                <a class="btn" href="#code" aria-label="Jump to the code">↗</a>
+            </div>
+        </div>
+
+        <!-- 2. clip-path vs border-shape -->
+        <h2>clip-path vs border-shape</h2>
+        <div class="pair">
+            <figure>
+                <p class="tag bad">CLIP-PATH · border and shadow cut off</p>
+                <div class="wrap small clip">
+                    <article class="card"><h3>Inverted Borders</h3></article>
+                    <span class="btn" aria-hidden="true">↗</span>
+                </div>
+            </figure>
+            <figure>
+                <p class="tag good">BORDER-SHAPE · they follow the notch</p>
+                <div class="wrap small">
+                    <article class="card"><h3>Inverted Borders</h3></article>
+                    <span class="btn" aria-hidden="true">↗</span>
+                </div>
+            </figure>
+        </div>
+
+        <!-- 3. two shapes = a cut-out -->
+        <h2>Bonus: two shapes = a cut-out</h2>
+        <p class="note">With two shapes, the border fills the space between them: <code>inset(0 round var(--r))</code> outside, the notch path inside.</p>
+        <div class="stage">
+            <div class="wrap cutout">
+                <article class="card">
+                    <h3>Inverted Borders</h3>
+                    <p>The same path, as an outline.</p>
+                </article>
+                <span class="btn" aria-hidden="true">↗</span>
+            </div>
+        </div>
+
+        <!-- 4. browser-style tabs -->
+        <h2>Browser-style tabs</h2>
+        <div class="win-tabs">
+            <fieldset class="tabs">
+                <legend class="sr">Pick a tab</legend>
+                <label><input type="radio" name="t" id="t-home" checked> Home</label>
+                <label><input type="radio" name="t" id="t-music"> Music</label>
+                <label><input type="radio" name="t" id="t-profile"> Profile</label>
+            </fieldset>
+            <div class="panel">
+                <h4></h4>
+                <i></i><i style="width:70%"></i><i></i><i style="width:45%"></i>
+            </div>
+        </div>
+
+        <!-- 5. a ticket -->
+        <h2>A ticket with two bites</h2>
+        <div class="stage">
+            <div class="ticket">
+                <small>ADMIT ONE</small>
+                <h3>Inverted Borders Live</h3>
+                <p>Fri · 9 PM · Row C</p>
+            </div>
+        </div>
+
+        <pre id="code"><code>.wrap { --r: 24px; --n: 96px; }
+
+.card {
+  border-radius: var(--r);  /* fallback */
+}
+
+@supports (border-shape: inset(0)) {
+  .card {
+    border: 4px solid #22d3ee;
+    box-shadow: 0 26px 50px #000c;
+    border-shape: shape(
+      from var(--r) 0,
+      hline to calc(100% - var(--r)),
+      arc to 100% var(--r) of var(--r) cw,
+      vline to calc(100% - var(--n) - var(--r)),
+      arc to calc(100% - var(--r))
+        calc(100% - var(--n)) of var(--r) cw,
+      hline to calc(100% - var(--n) + var(--r)),
+      arc to calc(100% - var(--n))
+        calc(100% - var(--n) + var(--r))
+        of var(--r) ccw,   /* the inverted corner */
+      vline to calc(100% - var(--r)),
+      arc to calc(100% - var(--n) - var(--r))
+        100% of var(--r) cw,
+      hline to var(--r),
+      arc to 0 calc(100% - var(--r)) of var(--r) cw,
+      vline to var(--r),
+      arc to var(--r) 0 of var(--r) cw,
+      close
+    );
+  }
+}
+
+/* smooth hover: register --n as a length */
+@property --n {
+  syntax: '&lt;length&gt;';
+  inherits: true;
+  initial-value: 96px;
+}
+.wrap { transition: --n .4s ease; }
+.wrap:hover { --n: 140px; }</code></pre>
+        <p class="note">border-shape: Chrome/Edge 147+ (not in Firefox or Safari yet, proposed for Interop 2027). shape(): Chrome 135+, Safari 18.4+, Firefox 148+ (Baseline 2026). border-shape ignores <code>border-radius</code>, <code>corner-shape</code> and <code>border-style</code>, so the corners are drawn into the shape and the border is always solid. The tabs switch with <code>:has(:checked)</code> on radio buttons, so there is no JavaScript at all.</p>
+    </main>
+</body>
+
+</html>
