@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gliding radio dot — CSS anchor positioning</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: #07080d; color: #f3f5f7; font: 600 1.4rem system-ui, sans-serif; }
+
+  .radios { position: relative; list-style: none; margin: 0; padding: 12px;
+    border-radius: 24px; background: rgb(255 255 255 / .06); border: 1px solid rgb(255 255 255 / .12); }
+  .radios label { display: flex; align-items: center; gap: 18px; padding: 14px 24px; cursor: pointer; color: #7e8796; }
+  .radios label:has(:checked) { color: #fff; }
+
+  .radios input { appearance: none; margin: 0; width: 1em; aspect-ratio: 1;
+    border: 2px solid rgb(255 255 255 / .3); border-radius: 50%; cursor: pointer; }
+
+  /* 1. every radio is an anchor */
+  .radios li:nth-child(1) input { anchor-name: --item-1; }
+  .radios li:nth-child(2) input { anchor-name: --item-2; }
+  .radios li:nth-child(3) input { anchor-name: --item-3; }
+  .radios li:nth-child(4) input { anchor-name: --item-4; }
+
+  /* 2. the checked one becomes the target */
+  .radios:has(li:nth-child(1) :checked) { --target: --item-1; }
+  .radios:has(li:nth-child(2) :checked) { --target: --item-2; }
+  .radios:has(li:nth-child(3) :checked) { --target: --item-3; }
+  .radios:has(li:nth-child(4) :checked) { --target: --item-4; }
+
+  /* 3. one dot springs to the target */
+  .radios::before {
+    content: ""; position: absolute; width: .5em; aspect-ratio: 1; border-radius: 50%;
+    background: #a78bfa; box-shadow: 0 0 12px 3px #8b5cf6;
+    top: anchor(var(--target) center);
+    left: anchor(var(--target) center);
+    translate: -50% -50%;
+    transition: top .5s cubic-bezier(.5, 1.6, .4, 1);
+  }
+
+  /* bonus: a glow bar that trails behind */
+  .radios::after {
+    content: ""; position: absolute; left: 6px; right: 6px; height: 2.4em; z-index: -1;
+    border-radius: 16px; background: linear-gradient(90deg, rgb(139 92 246 / .25), rgb(34 211 238 / .1));
+    top: calc(anchor(var(--target) center) - 1.2em);
+    transition: top .6s cubic-bezier(.65, 0, .35, 1);
+  }
+  .radios { isolation: isolate; }
+</style>
+</head>
+<body>
+  <ul class="radios">
+    <li><label><input type="radio" name="tech" checked> HTML</label></li>
+    <li><label><input type="radio" name="tech"> CSS</label></li>
+    <li><label><input type="radio" name="tech"> JavaScript</label></li>
+    <li><label><input type="radio" name="tech"> Angular</label></li>
+  </ul>
+</body>
+</html>
