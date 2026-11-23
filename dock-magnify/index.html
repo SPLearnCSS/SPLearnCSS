@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dock Magnify · SPLearnCSS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <main>
+        <h1>This dock? <span>Pure CSS.</span></h1>
+        <p class="lead">The Mac-style dock magnify, with <code>:hover</code> for the icon you touch and <code>:has(+ :hover)</code> for the icon <em>before</em> it, the part that used to need JavaScript. Hover the icons, or press Tab to move through them with the keyboard.</p>
+        <fieldset>
+            <legend>Neighbours:</legend>
+            <label><input type="radio" name="n" id="near" checked> Grow too</label>
+            <label><input type="radio" name="n" id="stiff"> Hover only (stiff)</label>
+        </fieldset>
+        <div class="desk">
+            <nav class="dock" aria-label="Apps">
+                <a class="icon" href="#" aria-label="Finder" style="--g1:#3b8cff;--g2:#6fd3ff"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5h6l2 2h10V19H3z"/></svg></a>
+                <a class="icon" href="#" aria-label="Music" style="--g1:#ff3d6e;--g2:#ff9a3d"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="16" r="2.4"/></svg></a>
+                <a class="icon" href="#" aria-label="Chat" style="--g1:#22c55e;--g2:#a8f06a"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></a>
+                <a class="icon" href="#" aria-label="Camera" style="--g1:#8f5bff;--g2:#ff6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="3"/><circle cx="12" cy="13" r="3.4"/><path d="M8 7l1.5-2.5h5L16 7"/></svg></a>
+                <a class="icon" href="#" aria-label="Mail" style="--g1:#0ea5e9;--g2:#36e0c8"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg></a>
+                <a class="icon" href="#" aria-label="Calendar" style="--g1:#ff5a3d;--g2:#ffb13d"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></a>
+            </nav>
+        </div>
+
+        <h2>The CSS</h2>
+        <pre><code>.icon { width: 64px; aspect-ratio: 1; transition: width .2s; }
+
+/* the icon you touch */
+.icon:hover { width: calc(64px * 1.6); }
+
+/* its direct neighbours: before (:has) and after (+) */
+.icon:has(+ .icon:hover),
+.icon:hover + .icon { width: calc(64px * 1.3); }
+
+/* the next ones out */
+.icon:has(+ .icon + .icon:hover),
+.icon:hover + .icon + .icon { width: calc(64px * 1.1); }
+
+/* label + click bounce */
+.icon::after { content: attr(aria-label); }
+.icon:active { animation: bounce .5s; }</code></pre>
+
+        <footer>Made by <a href="https://www.instagram.com/splearncss/">@SPLearnCSS</a> · <code>:has()</code> is Baseline 2023 (Chrome 105, Safari 15.4, Firefox 121). Without it, only the hovered icon and the ones after it grow. Animating <code>width</code> pushes the neighbours aside, like the real dock. With reduced motion the icons change size without the animation.</footer>
+    </main>
+</body>
+</html>
