@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotlight Glow Card · SPLearnCSS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <main>
+        <h1>This card <span>glows.</span></h1>
+        <p class="lead">The card glow from modern SaaS landing pages, in 3 CSS pieces: a spotlight <code>radial-gradient</code> at <code>--x / --y</code>, a glowing border made with <code>mask-composite: exclude</code>, and a spinning edge with <code>@property --angle</code>. Move your mouse over the cards (or tap around them). No JavaScript: a hidden 5×5 grid and <code>:has()</code> move the light.</p>
+        <fieldset>
+            <legend>Border light:</legend>
+            <label><input type="radio" name="mode" id="follow" checked> Follows the mouse</label>
+            <label><input type="radio" name="mode" id="spin"> Spins</label>
+        </fieldset>
+        <div class="grid">
+            <article class="card " tabindex="0">
+                <div class="icon"></div><h3>Edge Deploys</h3><p>Ship every commit to a live URL in seconds.</p>
+                <div class="ring" aria-hidden="true"></div>
+                <div class="zones" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </article>
+            <article class="card pro" tabindex="0">
+                <div class="icon"></div><h3>Pro</h3><p>Everything in Free, plus preview links and analytics.</p><b class="price">$12<small>/mo</small></b>
+                <div class="ring" aria-hidden="true"></div>
+                <div class="zones" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </article>
+            <article class="card " tabindex="0">
+                <div class="icon"></div><h3>Analytics</h3><p>Real-time numbers without a cookie banner.</p>
+                <div class="ring" aria-hidden="true"></div>
+                <div class="zones" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </article>
+        </div>
+
+        <h2>The CSS</h2>
+        <pre><code>@property --x { syntax: "&lt;percentage&gt;"; inherits: true; initial-value: 50%; }
+@property --y { syntax: "&lt;percentage&gt;"; inherits: true; initial-value: 50%; }
+@property --angle { syntax: "&lt;angle&gt;"; inherits: false; initial-value: 0deg; }
+
+/* 1. spotlight: a soft light that sits at --x / --y */
+.card {
+  background: radial-gradient(400px circle at var(--x) var(--y),
+    rgb(122 162 255 / .25), transparent 60%), #1a1f38;
+}
+/* 2. glow border: two masks, "exclude" keeps only the padding ring */
+.ring {
+  padding: 3px;
+  background: radial-gradient(300px circle at var(--x) var(--y),
+    #c8d6ff, #ff3d9a 35%, transparent 65%);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* 3. spinning edge: animate a registered angle */
+.pro .ring {
+  background: conic-gradient(from var(--angle), transparent 60%, #7aa2ff 75%, #ff3d9a 90%, transparent);
+  animation: spin 3s linear infinite;
+}
+@keyframes spin { to { --angle: 360deg; } }
+
+/* --x / --y come from the hovered zone (see styles.css),
+   or from 4 lines of JS if you want real pointer tracking. */</code></pre>
+
+        <footer>Made by <a href="https://www.instagram.com/splearncss/">@SPLearnCSS</a> · <code>mask-composite</code> is Baseline 2023 and <code>@property</code> Baseline 2024, so this works in every modern browser. With reduced motion the light jumps instead of gliding and the edge stops spinning.</footer>
+    </main>
+</body>
+</html>
